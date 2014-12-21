@@ -94,16 +94,17 @@ public class MultisigPresentation {
 		ECKey key1 = createKeyFromSha256Passphrase("Super secret key 1");
 		
 		// Use the redeem script we have saved somewhere to start building the transaction
-		Script redeemScript = new Script(hexStringToByteArray("524104..."));
+		Script redeemScript = new Script(hexStringToByteArray("524104711acc7644d34e493eba76984c81d99f1233f06b3242d90e6cd082b26fd0c1186f65de8d3378a6630f2285bd17972372685378683b604c68343fa1b532196c4d410476d6ef11a42010a889ee0c3d75f9cac3a51a3e245744fb9bf1bc8c196eb0f6982e39aad753514248966f4d545a5439ece8e27e13764c92f6230e0244cae5bee54104a45f0da4e6501fa781b6534e601f410a59328691d86d034d13362138f7e9a2927451280544e36c88279ee00c7face2fb707d0210842017e3937ae4584faacf6753ae"));
 		
 		// Start building the transaction by adding the unspent inputs we want to use
+		// The data is taken from blockchain.info, and can be found here: https://blockchain.info/rawtx/ca1884b8f2e0ba88249a86ec5ddca04f937f12d4fac299af41a9b51643302077
 		Transaction spendTx = new Transaction(params);
 		ScriptBuilder scriptBuilder = new ScriptBuilder();
-		scriptBuilder.data(new String("a91.....").getBytes());
-		TransactionInput input = spendTx.addInput(new Sha256Hash("cc1..."), 1, scriptBuilder.build());
+		scriptBuilder.data(new String("a9144f93910f309e2433c25d1e891e29fd4cec8c5f6187").getBytes()); // Script of this output
+		TransactionInput input = spendTx.addInput(new Sha256Hash("19f589be5fda5a97b5a26158abd1fa02e68a15e5a6a4d83791935f882dbe0492"), 0, scriptBuilder.build());
 		
 		// Add outputs to the person receiving bitcoins
-		Address receiverAddress = new Address(params, "1......");
+		Address receiverAddress = new Address(params, "1Magmaqvxx7LpUTYGWw8RNPEJXBQ6iSLVX");
 		Coin charge = Coin.valueOf(10000); // 0.1 mBTC
 		Script outputScript = ScriptBuilder.createOutputScript(receiverAddress);
         spendTx.addOutput(charge, outputScript);
